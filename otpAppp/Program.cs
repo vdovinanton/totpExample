@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base32;
 
-
 namespace otpAppp
 {
     public class Program
@@ -19,13 +18,13 @@ namespace otpAppp
             Console.Write("Input key: ");
             string key = Console.ReadLine();
 
+            var decodedKey = Base32Encoder.Decode(key);
+            var otp = new Totp(decodedKey);
             var task = Task.Factory.StartNew(() =>
             {
                 while (true)
                 {
-                    byte[] decodedKey = Base32Encoder.Decode(key);
-                    var otp = new Totp(decodedKey);
-
+                    otp = new Totp(decodedKey);
                     Log.Information(otp.ComputeTotp());
 
                     Thread.Sleep(1000);
